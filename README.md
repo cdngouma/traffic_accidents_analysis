@@ -6,12 +6,12 @@ The US Traffic Accident dataset from [Kaggle](https://www.kaggle.com/datasets/so
 
 * `ID`: Unique identifier for each accident.
 * `Source`: Source of the accident report (e.g., 911 call, news).
-* `Severity`: Accident severity rating (typically on a scale from 1 to 4).
+* `Severity`: Accident severity rating (on a scale from 1 to 4). 1 indicates the least impact on traffic (i.e., short delay as a result of the accident) and 4 indicates a significant impact on traffic (i.e., long delay).
 * `Start_Time`: Start time of the accident.
-* `End_Time`: End time of the accident.
+* `End_Time`: Time when the impact of accident on traffic flow was dismissed.
 * `Start_Lat/Start_Lng`: Latitude and longitude where the accident started.
 * `End_Lat/End_Lng`: Latitude and longitude where the accident ended (many missing values).
-* `Distance(mi)`: Distance covered by the accident.
+* `Distance(mi)`: The length of the road extent affected by the accident.
 * `Description`: Brief description of the accident.
 * `Street`, `City`, `County`, `State`, `Zipcode`: Location details of the accident.
 * `Country`: Country where the accident occurred (all should be the USA).
@@ -25,7 +25,7 @@ The US Traffic Accident dataset from [Kaggle](https://www.kaggle.com/datasets/so
 As we want to predict accident severity, some columns may be redundant or not useful for our predictive modeling. These would be `ID`, `Description`, `Source`, `End_Lat/End_Lng`, `Country`, and `Airport_Code`.
 
 ### 2.2. Preprocessing Steps
-1. Drop redundants or irrelevant columns
-2. Handle missing values (i) by removing rows when the percentage of missing values is very small (<2%) or (ii) filling missing values by imputation.
+1. Drop duplicates and redundants or irrelevant columns
+2. Handle missing values by (i) removing rows when the percentage of missing values is very small (<2%) or (ii) filling missing values by imputation.
 3. Fixing inconsistencies with numerical variables by removing outliers and impossible values. For instance, temperatures of 203F are quite unrealistic.
 4. Feature extraction: extracted more data from existing columns. For instance, we can extract `Road_Type` from the street name.
