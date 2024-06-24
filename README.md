@@ -23,3 +23,9 @@ The US Traffic Accident dataset from [Kaggle](https://www.kaggle.com/datasets/so
 * `Sunrise_Sunset`, `Civil_Twilight`, `Nautical_Twilight`, `Astronomical_Twilight`: Time of day indicators related to the position of the sun.
 
 As we want to predict accident severity, some columns may be redundant or not useful for our predictive modeling. These would be `ID`, `Description`, `Source`, `End_Lat/End_Lng`, `Country`, and `Airport_Code`.
+
+### 2.2. Preprocessing Steps
+1. Drop redundants or irrelevant columns
+2. Handle missing values (i) by removing rows when the percentage of missing values is very small (<2%) or (ii) filling missing values by imputation.
+3. Fixing inconsistencies with numerical variables by removing outliers and impossible values. For instance, temperatures of 203F are quite unrealistic.
+4. Feature extraction: extracted more data from existing columns. For instance, we can extract `Road_Type` from the street name.
