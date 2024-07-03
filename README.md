@@ -91,5 +91,3 @@ Some variables have a relatively strong relationship with the severity of the ac
 * `Is_Highway`: Moderate positive correlation (0.251) indicates the importance of distinguishing accidents on highways.
 * `Crossing`: Moderate negative correlation (-0.125) highlights the impact of accidents involving crossings.
 * `Hour`: Hourly patterns can directly relate to traffic conditions, commuter behavior, and visibility, which are critical factors influencing accident severity.
-
-## 4. Predictive Models
