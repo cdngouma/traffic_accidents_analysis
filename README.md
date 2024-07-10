@@ -142,11 +142,11 @@ We explored different machine learning model to predict the severity of an accid
 
 | Models        | Cross-Validation F1 | Train Accuracy | Train F1  | Train Kappa | Test Accuracy | Test F1   | Test Kappa |
 |---------------|---------------------|----------------|-----------|-------------|---------------|-----------|------------|
-| *Baseline*    | -                   | *0.639*        | *0.499*   | *0.000*     | *0.639*       | *0.499*   | *0.000*    |
+| *Baseline*    | -                   | 0.639        | 0.499   | *0.000*     | *0.639*       | 0.499   | 0.000    |
 | Decision Tree | 0.639               | 0.954          | 0.955     | 0.914       | 0.785         | 0.790     | 0.600      |
-| Random Forest | **0.729**           | 0.940          | 0.941     | 0.889       | 0.852         | **0.851** | **0.716**  |
-| XGBoost       | -                   | 0.923          | 0.919     | 0.846       | **0.853**     | 0.844     | 0.705      |
-| KNN           | 0.660               | **0.994**      | **0.994** | **0.989**   | 0.812         | 0.806     | 0.621      |
+| Random Forest | *0.729*           | 0.940          | 0.941     | 0.889       | 0.852         | *0.851* | *0.716*  |
+| XGBoost       | -                   | 0.923          | 0.919     | 0.846       | *0.853*     | 0.844     | 0.705      |
+| KNN           | 0.660               | *0.994*      | *0.994* | *0.989*   | 0.812         | 0.806     | 0.621      |
 
 Random Forest appears to be the best choice due to its strong overall performance and good generalization. It handles the feature space well and provides a good balance between accuracy, F1 score, and kappa.
 
