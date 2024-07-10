@@ -105,21 +105,51 @@ In this section we analyze the relationship between different variables and the 
   <img src="img/clusters.png" width="500">
 </p>
 
-### Correlation Analysis
+### 3.4. Correlation Analysis and Feature Selection
 During our analysis, we employed several statistical methods to measure the relationships between various types of variables and the target variable, `Severity` of accidents. 
 * For numerical and time-related variables such as `Distance`, `Temperature`, and `Hour` as well as ordinal variables like `Month`, we utilized [Spearman's Rank Correlation Coefficient](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient). 
 * For categorical variables like `State` and `Weather_Category`, we employed the [Chi-Square Test](https://en.wikipedia.org/wiki/Chi-squared_test) with [Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V) to assess the independence between different categories and the levels of `Severity`. 
 * Boolean variables such as `Amenity` and `Crossing` were also analyzed using [Point-Biserial Correlation](https://en.wikipedia.org/wiki/Point-biserial_correlation_coefficient).
 
 <p align="center">
-  <img src="img/correlations.png" width="800" title="Correlations with Severity">
+  <img src="img/correlations.png" width="800">
+</p>
+In addition to the correlation analysis, we fitted a Decision Tree on our data to determine the feature importance of some variables we are working with. Based on the correlation analysis and their potential predictive power for Severity. We would select variables having a correlation coefficient of at least 0.1 but also those who make sense given the problem. Here are the selected features:
+
+* **Distance(mi):** High correlation with severity (-0.3546) and the highest feature importance. Greater distance affected by the accident might indicate less severe impacts.
+* **Duration(min):** Significant negative correlation with severity (-0.2387) and high feature importance. Longer durations might suggest more severe accidents due to prolonged road closures or rescue operations.
+* **Location_Cluster:** Positive correlation with severity (0.2478) and high feature importance. Certain geographical clusters may have higher severity due to factors like traffic density or infrastructure.
+* **Hour:** Moderate positive correlation with severity (0.0659) and significant feature importance. Certain hours of the day might experience higher severity due to factors like rush hour or reduced visibility at dawn or dusk.
+* **Temperature(F):** Moderate negative correlation (-0.0673) and significant feature importance.
+* **Month:** Seasonal impact with moderate feature importance. Seasonal variations might influence accident severity due to weather conditions or road conditions.
+* **Pressure(in):** Low correlation with severity (0.0149) but notable feature importance. Low pressure suggest unstable weather conditions such as precipitation, strong winds, and reduced visibility.
+* **Humidity(%):** Low correlation with severity (-0.0240) but notable feature importance. High levels of humidity could be associated with fog, mist, and other weather conditions that may affect visibility.
+* **Wind_Speed(mph):** Low correlation (0.0211) but notable feature importance.
+* **Is_Highway:** Very low correlation with severity (0.0007) but notable feature importance (0.0220).
+* **Is_Night:** Positive correlates with severity (0.0753) with some feature importance. Accidents occurring at night might involve reduced visibility or different traffic patterns.
+
+<p align="center">
+  <img src="img/feature_importance.png" width="650">
 </p>
 
-Based on the correlation analysis and their potential predictive power for Severity. We would select variables having a correlation coefficient of at least 0.1 but also those who make sense given the problem. Here are the selected features:
-* **Distance(mi):** It negatively correlates with severity (-0.3546). Greater distance affected by the accident might indicate less severe impacts.
-* **Duration(min):** It negatively correlates with severity (-0.2387). Longer durations might suggest more severe accidents due to prolonged road closures or rescue operations.
-* **Location_Cluster:** It positively correlates with severity (0.2478). Certain geographical clusters may have higher severity due to factors like traffic density or infrastructure.
-* **Is_Night:** It positively correlates with severity (0.0753). Accidents occurring at night might involve reduced visibility or different traffic patterns.
-* **Month:** It negatively correlates with severity (-0.0741). Seasonal variations might influence accident severity due to weather conditions or road conditions.
-* **Hour:** It has a positive correlation with severity (0.0659). Certain hours of the day might experience higher severity due to factors like rush hour or reduced visibility at dawn or dusk.
+## 4. Predictive Models
+We explored different machine learning model to predict the severity of an accident in the state of New York. To evaluate our models and ensure good performances, we considered three metrics: Accuracy, [F-1 scores](https://en.wikipedia.org/wiki/F-score), and [Cohen's Kappa](https://en.wikipedia.org/wiki/Cohen%27s_kappa). The results of our experiments are summarized below:
+* **Baseline Model:** The baseline model has the lowest performance metrics, serving as a reference point for other models. The accuracy and F1 scores are both around 0.639, indicating a moderate level of performance without any complex modeling.
+* **Decision Tree:** The decision tree model shows significant overfitting, with very high train scores (accuracy, F1, and kappa) compared to the test scores. The test accuracy is 0.785, test F1 is 0.790, and test kappa is 0.600, indicating it performs moderately well but is prone to overfitting.
+* **Random Forest:** This model performs well with high train scores, and strong test performance. The test accuracy is 0.852, test F1 is 0.851, and test kappa is 0.716, showing it handles the data better and generalizes well to the test set.
+* **XGBoost:** Similar to Random Forest, XGBoost shows strong performance with test accuracy of 0.853, test F1 of 0.844, and test kappa of 0.705. This model also generalizes well but appears to slightly underperform compared to Random Forest in terms of kappa.
+* **KNN:** The KNN model shows substantial overfitting, with almost perfect train scores but a drop in test performance. The test accuracy is 0.812, test F1 is 0.806, and test kappa is 0.621.
+
+| Models        | Cross-Validation F1 | Train Accuracy | Train F1  | Train Kappa | Test Accuracy | Test F1   | Test Kappa |
+|---------------|---------------------|----------------|-----------|-------------|---------------|-----------|------------|
+| *Baseline*    | -                   | *0.639*        | *0.499*   | *0.000*     | *0.639*       | *0.499*   | *0.000*    |
+| Decision Tree | 0.639               | 0.954          | 0.955     | 0.914       | 0.785         | 0.790     | 0.600      |
+| Random Forest | **0.729**           | 0.940          | 0.941     | 0.889       | 0.852         | **0.851** | **0.716**  |
+| XGBoost       | -                   | 0.923          | 0.919     | 0.846       | **0.853**     | 0.844     | 0.705      |
+| KNN           | 0.660               | **0.994**      | **0.994** | **0.989**   | 0.812         | 0.806     | 0.621      |
+
+Random Forest appears to be the best choice due to its strong overall performance and good generalization. It handles the feature space well and provides a good balance between accuracy, F1 score, and kappa.
+
+## 5. Conclusion
+The analysis reveals that accident severity is influenced by a combination of factors related to the nature of the accident (distance and duration), environmental conditions (temperature, pressure, humidity, wind speed), and temporal aspects (hour, month). The location also plays a significant role, indicating that certain areas are more prone to severe accidents.
 
